@@ -18,3 +18,11 @@ export async function searchCredentials(req: Request, res: Response){
     const credentials = await credentialService.searchCredentials(userId, credentialId ? Number(credentialId) : undefined);
     return res.status(200).send(credentials);
 }
+
+
+export async function deleteCredential(req: Request, res: Response){
+    const credentialId: number = Number(req.params.credentialId);
+    const userId: number = res.locals.userId;
+    await credentialService.deleteCredential(userId, credentialId);
+    res.sendStatus(200);
+}

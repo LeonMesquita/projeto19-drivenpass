@@ -42,3 +42,14 @@ export async function searchCredentials(userId: number, credentialId?: number){
     }
     return credentials;
 }
+
+
+
+export async function deleteCredential(userId: number, credentialId: number){
+    const credential = await credentialRepository.findById(credentialId);
+    if(!credential) throw{type: 'not_found', message: 'credential not found'}
+    if(credential.user_id !== userId) throw{type: 'unauthorized', message: "this credential don't belongs to this user"}
+
+    await credentialRepository.deleteCredential(credentialId);
+
+}

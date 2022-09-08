@@ -21,6 +21,10 @@ export async function findAll(user_id: number){
 
 export async function findById(id: number){
     const credential = await prisma.credentials.findMany({where: {id}});
-    console.log(credential)
     return credential[0];
+}
+
+
+export async function deleteCredential(id: number){
+    await prisma.credentials.delete({where: {id}})
 }
