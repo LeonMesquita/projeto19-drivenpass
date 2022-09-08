@@ -17,6 +17,7 @@ export default  function errorHandler(
   //  console.log(ERRORS['unauthorized'])
     let statusCode: number = 500;
     if(error.type === "conflict") statusCode = 409;
+    else if(error.type === "unauthorized") statusCode = 401;
     //if (!statusCode) return res.sendStatus(500);
     return res.status(statusCode).send(error.message);
     
