@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+// model safeNotes{
+//     id Int @id @default(autoincrement())
+//     users users @relation(fields: [user_id], references: [id])
+//     user_id Int
+// }
+
+
+model users {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+  credentials credentials[]
+  safeNotes safe_notes[]
+  cards cards[]
+  wifis wifis[]
+}
+
+
+model credentials{
+  id Int @id @default(autoincrement())
+  users users @relation(fields: [user_id], references: [id])
+  user_id Int
+  url String
+  username String @db.VarChar(15)
+  password String @db.VarChar(20)
+  title String @db.VarChar(50)
+}
+
+
+
+model safe_notes{
+    id Int @id @default(autoincrement())
+    users users @relation(fields: [user_id], references: [id])
+    user_id Int
+    title String @db.VarChar(50)
+    note String @db.VarChar(1000)
+}
+
+
+
+enum card_type{
+  credit
+  debit
+  both
+}
+
+
+model cards{
+    id Int @id @default(autoincrement())
+    users users @relation(fields: [user_id], references: [id])
+    user_id Int
+    number String @unique
+    cardholder_name String
+    expiration_date String
+    security_code String @db.VarChar(3)
+    password String
+    is_virtual Boolean @default(false)
+    title String @db.VarChar(50)
+    type card_type
+}
+
+
+model wifis{
+    id Int @id @default(autoincrement())
+    users users @relation(fields: [user_id], references: [id])
+    user_id Int
+    network_name String @db.VarChar(50)
+    password String @db.VarChar(20)
+    title String @db.VarChar(50)
+}

@@ -14,9 +14,10 @@ export default  function errorHandler(
     next: NextFunction
 ){
     const type: string = error.type;
-    console.log(ERRORS['unauthorized'])
-    let statusCode: number = error.type ? error.type : 500;
-    if (!statusCode) return res.sendStatus(500);
+  //  console.log(ERRORS['unauthorized'])
+    let statusCode: number = 500;
+    if(error.type === "conflict") statusCode = 409;
+    //if (!statusCode) return res.sendStatus(500);
     return res.status(statusCode).send(error.message);
     
 
