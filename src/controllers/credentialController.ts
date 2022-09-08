@@ -10,3 +10,11 @@ export async function createCredential(req: Request, res: Response){
     });
     return res.sendStatus(201);
 }
+
+
+export async function searchCredentials(req: Request, res: Response){
+    const credentialId = req.query["credentialId"];
+    const userId: number = res.locals.userId;
+    const credentials = await credentialService.searchCredentials(userId, credentialId ? Number(credentialId) : undefined);
+    return res.status(200).send(credentials);
+}

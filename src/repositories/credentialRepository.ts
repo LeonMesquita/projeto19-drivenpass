@@ -1,5 +1,6 @@
 import { ICredentialData } from "../interfaces/credentialInterface";
 import prisma from "../config/database";
+import { credentials } from "@prisma/client";
 
 export async function insert(data: ICredentialData){
     await prisma.credentials.create({data});
@@ -11,4 +12,15 @@ export async function findByTitle(title: string, userId: number){
    return credential;
 }
 
-//const user = await prisma.users.findUnique({where: {id}});
+
+export async function findAll(user_id: number){
+    const credentials = await prisma.credentials.findMany({where: {user_id}});
+    return credentials;
+}
+
+
+export async function findById(id: number){
+    const credential = await prisma.credentials.findMany({where: {id}});
+    console.log(credential)
+    return credential[0];
+}

@@ -1,4 +1,5 @@
 import { ICredentialData } from "../interfaces/credentialInterface";
+import { credentials } from "@prisma/client";
 import * as credentialRepository from '../repositories/credentialRepository';
 import Cryptr from "cryptr";
 const cryptr = new Cryptr('myTotallySecretKey');
@@ -12,4 +13,32 @@ export async function createCredential(credentialData: ICredentialData){
         ...credentialData,
         password: encryptedPassword
     });
+}
+
+
+
+export async function searchCredentials(userId: number, credentialId?: number){
+    let credentials: credentials[];
+    let credential: credentials;
+    if(credentialId){
+         credential = await credentialRepository.findById(credentialId);
+         if(!credential) throw{type: 'not_found', message: 'credential not found'}
+         if(credential.user_id !== userId) throw{type: 'unauthorized', message: "this credential don't belongs to this user"}
+         const decryptedPassword = cryptr.decrypt(credential.password);
+
+         return {...credential, password: decryptedPassword};
+
+    }
+
+    else {
+         const cred = await credentialRepository.findAll(userId);
+         credentials = cred.map(cred => {
+            return {
+                ...cred,
+                password: cryptr.decrypt(cred.password)
+            }
+         });
+
+    }
+    return credentials;
 }
