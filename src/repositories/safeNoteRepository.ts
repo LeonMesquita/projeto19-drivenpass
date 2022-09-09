@@ -6,7 +6,21 @@ export async function insert(data: ISafeNoteData){
 }
 
 
-export async function getByTitle(title: string, user_id: number){
+export async function findByTitle(title: string, user_id: number){
     const safeNote = await prisma.safe_notes.findFirst({where: {title, user_id}});
     return safeNote;
+}
+
+
+export async function findAll(user_id: number){
+    const safeNotes = await prisma.safe_notes.findMany({where: {user_id}});
+    return safeNotes;
+
+}
+
+
+export async function findById(id: number){
+    const safeNote = await prisma.safe_notes.findFirst({where: {id}});
+    return safeNote;
+
 }
