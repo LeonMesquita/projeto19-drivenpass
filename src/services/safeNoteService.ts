@@ -1,5 +1,7 @@
 import { ISafeNoteData } from "../interfaces/safeNoteInterface";
 import * as safeNoteRepository from '../repositories/safeNoteRepository';
+import { checkExists } from "../utils/checkExists";
+
 
 export async function createSafeNotes(safeNoteData: ISafeNoteData, userId: number){
     const safeNote = await safeNoteRepository.findByTitle(safeNoteData.title, userId);
@@ -14,8 +16,7 @@ export async function createSafeNotes(safeNoteData: ISafeNoteData, userId: numbe
 export async function getSafeNotes(userId: number, safeNoteId?: number){
     if(safeNoteId){
         const safeNote = await safeNoteRepository.findById(safeNoteId);
-        if(!safeNote) throw{type: 'not_found', message: 'safe note not found'}
-        if(safeNote.user_id !== userId) throw{type: 'unauthorized', message: "this safe note don't belongs to this user"}
+        checkExists(safeNote, 'safe note', userId);
         return safeNote;
     }
     else{
@@ -28,8 +29,7 @@ export async function getSafeNotes(userId: number, safeNoteId?: number){
 
 export async function deleteSafeNote(safeNoteId: number, userId: number){
     const safeNote = await safeNoteRepository.findById(safeNoteId);
-    if(!safeNote) throw{type: 'not_found', message: 'safe note not found'}
-    if(safeNote.user_id !== userId) throw{type: 'unauthorized', message: "this safe note don't belongs to this user"}    
+    checkExists(safeNote, 'safe note', userId);    
 
     await safeNoteRepository.deleteSafeNote(safeNoteId);
 }

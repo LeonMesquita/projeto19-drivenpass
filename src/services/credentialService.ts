@@ -1,8 +1,12 @@
 import { ICredentialData } from "../interfaces/credentialInterface";
 import { credentials } from "@prisma/client";
+import { checkExists } from "../utils/checkExists";
+
 import * as credentialRepository from '../repositories/credentialRepository';
+import dotenv from 'dotenv';
+dotenv.config();
 import Cryptr from "cryptr";
-const cryptr = new Cryptr('myTotallySecretKey');
+const cryptr = new Cryptr(process.env.CRYPTR_KEY!);
 
 export async function createCredential(credentialData: ICredentialData){
     const encryptedPassword = cryptr.encrypt(credentialData.password);
@@ -17,13 +21,12 @@ export async function createCredential(credentialData: ICredentialData){
 
 
 
-export async function searchCredentials(userId: number, credentialId?: number){
+export async function getCredentials(userId: number, credentialId?: number){
     let credentials: credentials[];
     let credential: credentials;
     if(credentialId){
          credential = await credentialRepository.findById(credentialId);
-         if(!credential) throw{type: 'not_found', message: 'credential not found'}
-         if(credential.user_id !== userId) throw{type: 'unauthorized', message: "this credential don't belongs to this user"}
+         checkExists(credential, 'credential', userId);
          const decryptedPassword = cryptr.decrypt(credential.password);
 
          return {...credential, password: decryptedPassword};
@@ -47,8 +50,7 @@ export async function searchCredentials(userId: number, credentialId?: number){
 
 export async function deleteCredential(userId: number, credentialId: number){
     const credential = await credentialRepository.findById(credentialId);
-    if(!credential) throw{type: 'not_found', message: 'credential not found'}
-    if(credential.user_id !== userId) throw{type: 'unauthorized', message: "this credential don't belongs to this user"}
+    checkExists(credential, 'credential', userId);
 
     await credentialRepository.deleteCredential(credentialId);
 

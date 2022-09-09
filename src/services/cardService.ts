@@ -1,5 +1,6 @@
 import { CardData } from "../interfaces/cardInterface";
 import * as cardRepository from '../repositories/cardRepository';
+import { checkExists } from "../utils/checkExists";
 import dotenv from 'dotenv';
 dotenv.config();
 import Cryptr from "cryptr";
@@ -22,10 +23,8 @@ export async function createCard(cardData: CardData, userId: number){
 export async function getCards(userId: number, cardId?: number){
     if(cardId){
         const card = await cardRepository.findById(cardId, userId);
-        if(!card) throw{type: 'not_found', message: 'card not found'};
-        if(card.user_id !== userId) throw{type: 'unauthorized', message: "this card don't belongs to this user"};
-        const decryptedPassword: string = cryptr.decrypt(card.password);
-
+        checkExists(card, 'card', userId);
+        const decryptedPassword: string = cryptr.decrypt(card!.password);
         return {...card, password: decryptedPassword};
     }
     else{
@@ -43,8 +42,7 @@ export async function getCards(userId: number, cardId?: number){
 
 export async function deleteCard(userId: number, cardId: number){
     const card = await cardRepository.findById(cardId, userId);
-    if(!card) throw{type: 'not_found', message: 'card not found'}
-    if(card.user_id !== userId) throw{type: 'unauthorized', message: "this card don't belongs to this user"}
+    checkExists(card, 'card', userId);
 
     await cardRepository.deleteCard(cardId);
 }

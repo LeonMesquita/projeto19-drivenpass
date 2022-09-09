@@ -1,6 +1,6 @@
 import { DocumentData } from "../interfaces/documentInterface";
 import * as documentRepository from '../repositories/documentRepository';
-
+import { checkExists } from "../utils/checkExists";
 
 export async function createDocument(documentData: DocumentData, userId: number){
     await documentRepository.insert({
@@ -13,8 +13,7 @@ export async function createDocument(documentData: DocumentData, userId: number)
 export async function getDocuments(userId: number, documentId?: number){
     if(documentId){
         const document = await documentRepository.findById(documentId, userId);
-        if(!document) throw{type: 'not_found', message: 'document not found'};
-        if(document.user_id !== userId) throw{type: 'unauthorized', message: "this document don't belongs to this user"};
+        checkExists(document, 'document', userId);
         return document;
     }
     else{
@@ -26,8 +25,6 @@ export async function getDocuments(userId: number, documentId?: number){
 
 export async function deleteCard(userId: number, documentId: number){
     const document = await documentRepository.findById(documentId, userId);
-    if(!document) throw{type: 'not_found', message: 'document not found'}
-    if(document.user_id !== userId) throw{type: 'unauthorized', message: "this document don't belongs to this user"}
-
+    checkExists(document, 'document', userId);
     await documentRepository.deleteDocument(documentId);
 }

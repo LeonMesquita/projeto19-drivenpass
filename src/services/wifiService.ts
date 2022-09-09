@@ -1,5 +1,7 @@
 import * as wifiRepository from '../repositories/wifiRepository';
 import { WifiData } from '../interfaces/wifiInterface';
+import { checkExists } from "../utils/checkExists";
+
 import dotenv from 'dotenv';
 dotenv.config();
 import Cryptr from "cryptr";
@@ -19,9 +21,8 @@ export async function createWifi(wifiData: WifiData, userId: number){
 export async function getWifis(userId: number, wifiId?: number){
     if(wifiId){
         const wifi = await wifiRepository.findById(userId, wifiId);
-        if(!wifi) throw{type: 'not_found', message: 'wifi not found'};
-        if(wifi.user_id !== userId) throw{type: 'unauthorized', message: "this wifi don't belongs to this user"};
-        const decryptedPassword: string = cryptr.decrypt(wifi.password);
+        checkExists(wifi, 'wifi', userId);
+        const decryptedPassword: string = cryptr.decrypt(wifi!.password);
         return {...wifi, password: decryptedPassword};
     }
     else{
@@ -39,8 +40,7 @@ export async function getWifis(userId: number, wifiId?: number){
 
 export async function deleteWifi(userId: number, wifiId: number){
     const wifi = await wifiRepository.findById(userId, wifiId);
-    if(!wifi) throw{type: 'not_found', message: 'wifi not found'}
-    if(wifi.user_id !== userId) throw{type: 'unauthorized', message: "this wifi don't belongs to this user"};
+    checkExists(wifi, 'wifi', userId);
 
     await wifiRepository.deleteWifi(wifiId);
 }
