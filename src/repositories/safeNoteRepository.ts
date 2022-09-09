@@ -24,3 +24,8 @@ export async function findById(id: number){
     return safeNote;
 
 }
+
+
+export async function deleteSafeNote(id: number){
+    await prisma.safe_notes.delete({where: {id}});
+}

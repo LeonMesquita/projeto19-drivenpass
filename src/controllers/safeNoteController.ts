@@ -16,3 +16,14 @@ export async function getSafeNotes(req: Request, res: Response){
 
     res.status(200).send(safeNotes)
 }
+
+
+
+export async function deleteSafeNote(req: Request, res: Response){
+    const userId: number = res.locals.userId;
+
+    const safeNoteId: number = Number(req.params.safeNoteId);
+
+    await safeNoteService.deleteSafeNote(safeNoteId, userId);
+    return res.sendStatus(200);
+}
