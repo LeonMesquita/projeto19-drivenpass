@@ -29,7 +29,7 @@ Drivenpass is a password management project made in Typescript.
 ## Features
 
 -   Register users and Login users
-
+-   Credentials
 </br>
 
 
@@ -53,5 +53,80 @@ POST /signin
 
 `Password length: at least 10`
 
+</br>
+
+### Credentials
+</br>
+
+-   Create credentials
+
+```http
+POST /credentials
+```
+
+#### Request:
+
+| Body         | Type     |
+| :------------| :------- |
+| `url`      | `string` | 
+| `username`  | `string`| 
+| `password`  | `string`| 
+| `title`  | `string`|
 
 
+
+
+
+
+
+`url must be an valid url`
+</br>
+`Password length: at least 5`
+
+
+| Headers         | Type     |
+| :------------| :------- |
+| `token`      | `Bearer token` |
+
+`An example of token usage: "Bearer eyJhbGciOiJIUzI1NiJ9.NA.hGzbhV32912Ae0JSyxaVYgTs8cng4L6dQCCucAbOLZI"`
+
+
+</br>
+</br>
+</br>
+
+-   Get credentials
+
+```http
+GET /credentials
+```
+
+`In this route, you can get all credentials from a user or an especific credential with the query string named "credentialId".`
+</br>
+
+`If you don't pass any query string, it will return all credentials.`
+
+#### Request:
+
+| Headers         | Type     |
+| :------------| :------- |
+| `token`      | `Bearer token` |
+
+
+
+-   Delete credentials
+
+```http
+DELETE /credentials/:credentialId
+```
+
+
+#### Request:
+
+| Params         | Type     |
+| :------------| :------- |
+| `credentialId`      | `int` |
+
+| Headers         | Type     |
+| :------------| :------- |
+| `token`      | `Bearer token` |
