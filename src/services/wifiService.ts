@@ -35,3 +35,12 @@ export async function getWifis(userId: number, wifiId?: number){
         return wifis;
     }
 }
+
+
+export async function deleteWifi(userId: number, wifiId: number){
+    const wifi = await wifiRepository.findById(userId, wifiId);
+    if(!wifi) throw{type: 'not_found', message: 'wifi not found'}
+    if(wifi.user_id !== userId) throw{type: 'unauthorized', message: "this wifi don't belongs to this user"};
+
+    await wifiRepository.deleteWifi(wifiId);
+}

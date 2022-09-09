@@ -7,5 +7,6 @@ const wifiRouter = Router();
 
 wifiRouter.post('/wifis',validateSchema(wifiSchema), authenticateToken, wifiController.createWifi);
 wifiRouter.get('/wifis', authenticateToken, wifiController.getWifis);
+wifiRouter.delete('/wifis/:wifiId', authenticateToken, wifiController.deleteWifi);
 
 export default wifiRouter;

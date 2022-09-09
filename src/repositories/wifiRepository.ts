@@ -18,3 +18,8 @@ export async function findAll(user_id: number){
     const wifis = prisma.wifis.findMany({where: {user_id}});
     return wifis;
 }
+
+
+export async function deleteWifi(id: number){
+    await prisma.wifis.delete({where: {id}});
+}
