@@ -76,6 +76,6 @@ model wifis{
     users users @relation(fields: [user_id], references: [id])
     user_id Int
     network_name String @db.VarChar(50)
-    password String @db.VarChar(20)
+    password String
     title String @db.VarChar(50)
 }
