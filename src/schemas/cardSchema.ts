@@ -8,7 +8,7 @@ const cardSchema = joi.object({
     password: joi.string().required(),
     is_virtual: joi.boolean().required(),
     title: joi.string().max(50).required(),
-    type:  joi.string().valid('credit', 'debit', 'both').required()
+    type: joi.string().valid('credit', 'debit', 'both').required()
 
 });
 

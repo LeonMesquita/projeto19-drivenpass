@@ -9,11 +9,6 @@ datasource db {
 
 
 
-// model safeNotes{
-//     id Int @id @default(autoincrement())
-//     users users @relation(fields: [user_id], references: [id])
-//     user_id Int
-// }
 
 
 model users {
@@ -24,6 +19,7 @@ model users {
   safeNotes safe_notes[]
   cards cards[]
   wifis wifis[]
+  documents documents[]
 }
 
 
@@ -78,4 +74,23 @@ model wifis{
     network_name String @db.VarChar(50)
     password String
     title String @db.VarChar(50)
+}
+
+
+enum document_type{
+  RG
+  CNH
+}
+
+
+model documents{
+    id Int @id @default(autoincrement())
+    users users @relation(fields: [user_id], references: [id])
+    user_id Int
+    name String
+    issue_date String
+    expiration_date String
+    register_number String
+    issuing_body String
+    type document_type
 }
