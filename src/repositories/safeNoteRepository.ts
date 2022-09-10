@@ -1,7 +1,7 @@
 import prisma from "../config/database";
-import { ISafeNoteData } from "../interfaces/safeNoteInterface";
+import { SafeNoteData } from "../interfaces/safeNoteInterface";
 
-export async function insert(data: ISafeNoteData){
+export async function insert(data: SafeNoteData){
     await prisma.safe_notes.create({data});
 }
 

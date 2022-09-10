@@ -1,4 +1,4 @@
-import { ICredentialData } from "../interfaces/credentialInterface";
+import { CredentialData } from "../interfaces/credentialInterface";
 import { credentials } from "@prisma/client";
 import { checkExists } from "../utils/checkExists";
 
@@ -8,7 +8,7 @@ dotenv.config();
 import Cryptr from "cryptr";
 const cryptr = new Cryptr(process.env.CRYPTR_KEY!);
 
-export async function createCredential(credentialData: ICredentialData){
+export async function createCredential(credentialData: CredentialData){
     const encryptedPassword = cryptr.encrypt(credentialData.password);
 
     const credential = await credentialRepository.findByTitle(credentialData.title, credentialData.user_id);

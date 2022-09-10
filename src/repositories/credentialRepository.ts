@@ -1,8 +1,8 @@
-import { ICredentialData } from "../interfaces/credentialInterface";
+import { CredentialData } from "../interfaces/credentialInterface";
 import prisma from "../config/database";
 import { credentials } from "@prisma/client";
 
-export async function insert(data: ICredentialData){
+export async function insert(data: CredentialData){
     await prisma.credentials.create({data});
 }
 

@@ -1,3 +1,3 @@
 import { safe_notes } from "@prisma/client";
 
-export type ISafeNoteData = Omit<safe_notes, 'id'>;
+export type SafeNoteData = Omit<safe_notes, 'id'>;

@@ -1,4 +1,4 @@
 import { credentials } from "@prisma/client";
 
 
-export type ICredentialData = Omit<credentials, 'id'>
+export type CredentialData = Omit<credentials, 'id'>

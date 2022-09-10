@@ -1,9 +1,9 @@
-import { ISafeNoteData } from "../interfaces/safeNoteInterface";
+import { SafeNoteData } from "../interfaces/safeNoteInterface";
 import * as safeNoteRepository from '../repositories/safeNoteRepository';
 import { checkExists } from "../utils/checkExists";
 
 
-export async function createSafeNotes(safeNoteData: ISafeNoteData, userId: number){
+export async function createSafeNotes(safeNoteData: SafeNoteData, userId: number){
     const safeNote = await safeNoteRepository.findByTitle(safeNoteData.title, userId);
     if(safeNote) throw{type: "conflict", message: "This user already have a safe note with this title"}
     await safeNoteRepository.insert({
