@@ -5,10 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && npx prisma generate && npx prisma migrate deploy",
     "dev": "nodemon src/index.ts",
-    "start": "ts-node src/index.ts",
-    "outDir": "dist"
+    "start": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
